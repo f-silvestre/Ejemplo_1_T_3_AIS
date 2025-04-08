@@ -4,6 +4,13 @@ on:
   push:
 
 jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ macos-latest, windows-latest, ubuntu-latest ]
+        java: [ '8', '11', '17']
 
   test:
     runs-on: ubuntu-latest
