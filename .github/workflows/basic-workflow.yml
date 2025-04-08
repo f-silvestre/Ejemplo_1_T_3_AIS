@@ -1,24 +1,26 @@
 name: Continuous integration example
 
-on: 
+on:
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
+  test:
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-latest, windows-latest, ubuntu-latest ]
-        java: [ '8', '11', '17']
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        java: ['8', '11', '17']
 
-  test:
     runs-on: ${{ matrix.os }}
+
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK 17
+      
+      - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '17'
-      - run: mvn test
+          java-version: ${{ matrix.java }}
+          
+      - name: Build and Test with Maven
+        run: mvn test
